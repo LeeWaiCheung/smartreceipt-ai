@@ -1,0 +1,353 @@
+{
+  "description": "20 clear self-created receipts and two uncertainty cases. Not real-world accuracy evidence until an actual evaluation is run.",
+  "cases": [
+    {
+      "id": "clear-1",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-01.png"
+      ],
+      "expected": {
+        "merchant": "Harbour Coffee",
+        "transaction_date": "2026-09-01",
+        "amount": "35.50",
+        "currency": "HKD",
+        "tax": "1.78",
+        "category_id": "food"
+      }
+    },
+    {
+      "id": "clear-2",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-02.jpg"
+      ],
+      "expected": {
+        "merchant": "City Taxi",
+        "transaction_date": "2026-09-02",
+        "amount": "52.73",
+        "currency": "USD",
+        "tax": "2.64",
+        "category_id": "transport"
+      }
+    },
+    {
+      "id": "clear-3",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-03.png"
+      ],
+      "expected": {
+        "merchant": "Paper & Ink",
+        "transaction_date": "2026-09-03",
+        "amount": "69.96",
+        "currency": "CNY",
+        "tax": "3.50",
+        "category_id": "office"
+      }
+    },
+    {
+      "id": "clear-4",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-04.jpg"
+      ],
+      "expected": {
+        "merchant": "Cloud Studio",
+        "transaction_date": "2026-09-04",
+        "amount": "87.19",
+        "currency": "HKD",
+        "tax": "4.36",
+        "category_id": "software"
+      }
+    },
+    {
+      "id": "clear-5",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-05.png"
+      ],
+      "expected": {
+        "merchant": "Home Internet",
+        "transaction_date": "2026-09-05",
+        "amount": "104.42",
+        "currency": "USD",
+        "tax": "5.22",
+        "category_id": "utilities"
+      }
+    },
+    {
+      "id": "clear-6",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-06.jpg"
+      ],
+      "expected": {
+        "merchant": "Garden Hotel",
+        "transaction_date": "2026-09-06",
+        "amount": "121.65",
+        "currency": "CNY",
+        "tax": "6.08",
+        "category_id": "travel"
+      }
+    },
+    {
+      "id": "clear-7",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-07.png"
+      ],
+      "expected": {
+        "merchant": "Corner Bakery",
+        "transaction_date": "2026-09-07",
+        "amount": "138.88",
+        "currency": "HKD",
+        "tax": "6.94",
+        "category_id": "food"
+      }
+    },
+    {
+      "id": "clear-8",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-08.jpg"
+      ],
+      "expected": {
+        "merchant": "Metro Transit",
+        "transaction_date": "2026-09-08",
+        "amount": "156.11",
+        "currency": "USD",
+        "tax": "7.81",
+        "category_id": "transport"
+      }
+    },
+    {
+      "id": "clear-9",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-09.png"
+      ],
+      "expected": {
+        "merchant": "Desk Supply",
+        "transaction_date": "2026-09-09",
+        "amount": "173.34",
+        "currency": "CNY",
+        "tax": "8.67",
+        "category_id": "office"
+      }
+    },
+    {
+      "id": "clear-10",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-10.jpg"
+      ],
+      "expected": {
+        "merchant": "Design Toolkit",
+        "transaction_date": "2026-09-10",
+        "amount": "190.57",
+        "currency": "HKD",
+        "tax": "9.53",
+        "category_id": "software"
+      }
+    },
+    {
+      "id": "clear-11",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-11.png"
+      ],
+      "expected": {
+        "merchant": "Electric Utility",
+        "transaction_date": "2026-09-11",
+        "amount": "207.80",
+        "currency": "USD",
+        "tax": "10.39",
+        "category_id": "utilities"
+      }
+    },
+    {
+      "id": "clear-12",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-12.jpg"
+      ],
+      "expected": {
+        "merchant": "Airport Shuttle",
+        "transaction_date": "2026-09-12",
+        "amount": "225.03",
+        "currency": "CNY",
+        "tax": "11.25",
+        "category_id": "travel"
+      }
+    },
+    {
+      "id": "clear-13",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-13.png"
+      ],
+      "expected": {
+        "merchant": "Morning Cafe",
+        "transaction_date": "2026-09-13",
+        "amount": "242.26",
+        "currency": "HKD",
+        "tax": "12.11",
+        "category_id": "food"
+      }
+    },
+    {
+      "id": "clear-14",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-14.jpg"
+      ],
+      "expected": {
+        "merchant": "Island Ferry",
+        "transaction_date": "2026-09-14",
+        "amount": "259.49",
+        "currency": "USD",
+        "tax": "12.97",
+        "category_id": "transport"
+      }
+    },
+    {
+      "id": "clear-15",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-15.png"
+      ],
+      "expected": {
+        "merchant": "Office Books",
+        "transaction_date": "2026-09-15",
+        "amount": "276.72",
+        "currency": "CNY",
+        "tax": "13.84",
+        "category_id": "office"
+      }
+    },
+    {
+      "id": "clear-16",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-16.jpg"
+      ],
+      "expected": {
+        "merchant": "Workspace Software",
+        "transaction_date": "2026-09-16",
+        "amount": "293.95",
+        "currency": "HKD",
+        "tax": "14.70",
+        "category_id": "software"
+      }
+    },
+    {
+      "id": "clear-17",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-17.png"
+      ],
+      "expected": {
+        "merchant": "Mobile Service",
+        "transaction_date": "2026-09-17",
+        "amount": "311.18",
+        "currency": "USD",
+        "tax": "15.56",
+        "category_id": "utilities"
+      }
+    },
+    {
+      "id": "clear-18",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-18.jpg"
+      ],
+      "expected": {
+        "merchant": "Travel Lodge",
+        "transaction_date": "2026-09-18",
+        "amount": "328.41",
+        "currency": "CNY",
+        "tax": "16.42",
+        "category_id": "travel"
+      }
+    },
+    {
+      "id": "clear-19",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-19.png"
+      ],
+      "expected": {
+        "merchant": "Lunch Kitchen",
+        "transaction_date": "2026-09-19",
+        "amount": "345.64",
+        "currency": "HKD",
+        "tax": "17.28",
+        "category_id": "food"
+      }
+    },
+    {
+      "id": "clear-20",
+      "group": "clear",
+      "provenance": "self-created",
+      "pages": [
+        "receipt-20.jpg"
+      ],
+      "expected": {
+        "merchant": "Station Bus",
+        "transaction_date": "2026-09-20",
+        "amount": "362.87",
+        "currency": "USD",
+        "tax": "18.14",
+        "category_id": "transport"
+      }
+    },
+    {
+      "id": "missing-fields",
+      "group": "uncertain",
+      "provenance": "self-created",
+      "pages": [
+        "missing-fields.png"
+      ],
+      "expected": {
+        "merchant": "Unknown Currency Cafe",
+        "transaction_date": null,
+        "amount": "68.00",
+        "currency": null
+      }
+    },
+    {
+      "id": "blurred",
+      "group": "uncertain",
+      "provenance": "self-created",
+      "pages": [
+        "blurred.png"
+      ],
+      "expected": {
+        "transaction_date": null,
+        "amount": null,
+        "currency": null
+      },
+      "note": "Deliberately unreadable; inspect warnings and any confidently invented values manually."
+    }
+  ]
+}

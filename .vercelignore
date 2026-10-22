@@ -1,0 +1,11 @@
+.git
+.github
+.next
+node_modules
+.env*
+*.tsbuildinfo
+reports
+fixtures
+docs
+**/*.test.ts
+vitest.config.mts

@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.vercel/
+.env*
+!.env.example
+*.tsbuildinfo
+coverage/
+reports/
+public/pdf.worker.min.mjs
+*.log
+.DS_Store
