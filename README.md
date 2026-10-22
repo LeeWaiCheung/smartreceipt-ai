@@ -6,13 +6,14 @@ A bilingual receipt and expense workspace for individuals and freelancers in Hon
 
 **Next.js 16 · React 19 · TypeScript · Supabase Auth / PostgreSQL / Storage · DeepSeek Vision · Recharts · Tailwind CSS · Vercel**
 
-![English dashboard showing sample expenses, a monthly budget and expense charts](docs/images/dashboard-en.jpg)
+![English dashboard with a real receipt example](docs/images/dashboard-en.png)
 
-The public demo is read-only and uses labelled sample data and generated receipts. It does not call the AI API. The private workspace uses real authentication, storage, extraction and exchange rates. Private registration is currently invitation-only because custom SMTP is not configured.
+The homepage contains read-only examples from licensed photographs of real receipts, with original dates and manually checked fields. **Try AI without signing up** creates an isolated 24-hour trial ledger: upload or take a photo, run real DeepSeek extraction, review, post and explore the dashboard. Personal account registration remains restricted while custom SMTP is not configured. [Photo sources](docs/RECEIPT_SOURCES.md) · [Trial design and limits](docs/GUEST_TRIAL.md).
 
 ## Features
 
-- **Receipt uploads:** JPG, PNG and PDF; up to 10 files per batch, 10 MB per file and 10 pages per PDF. A multi-page PDF represents one receipt.
+- **Guest trial:** 3 lifetime scan attempts (including failures), 3 receipts, 5 MB per file and 2 PDF pages. Server-enforced public allowance: 20 AI reservations/day, 5 new workspaces/day, 2 per network/day.
+- **Private receipt uploads:** JPG, PNG and PDF; up to 10 files per batch, 10 MB per file and 10 pages per PDF. A multi-page PDF represents one receipt.
 - **AI extraction and review:** merchant, date, total, currency, tax and category; an image preview with zoom beside an editable form. Drafts do not enter expense totals until confirmed.
 - **HKD conversion:** HKD, USD and CNY, using historical reference rates. Each transaction retains its original amount, rate, rate date, source and converted amount.
 - **Expense management:** monthly budgets, six-calendar-month trends, category breakdowns, transaction editing, search, filtering, sorting and pagination.
@@ -62,7 +63,7 @@ Open [http://127.0.0.1:3000](http://127.0.0.1:3000). The public demo works witho
 
 ### Enable a private workspace
 
-1. Create a separate Supabase project and apply [`202610210001_initial.sql`](supabase/migrations/202610210001_initial.sql) **once to a new, empty project**.
+1. Create a separate Supabase project and apply [`202610210001_initial.sql`](supabase/migrations/202610210001_initial.sql) **once to a new, empty project**, then apply [`202610230001_guest_trial.sql`](supabase/migrations/202610230001_guest_trial.sql). Existing installations apply only the new additive migration.
 2. Copy [`.env.example`](.env.example) to `.env.local` and supply your own service credentials. Alternatively, the development-only `/setup` page saves these settings locally.
 3. Configure Supabase Auth redirect URLs for `http://127.0.0.1:3000/auth/confirm` and complete email confirmation. The default email service restricts recipients; configure custom SMTP before opening registration to the public.
 4. Restart the development server and sign in at `/auth`.
@@ -76,6 +77,7 @@ Open [http://127.0.0.1:3000](http://127.0.0.1:3000). The public demo works witho
 | `DEEPSEEK_MODEL` | Defaults to `deepseek-flash` |
 | `DEEPSEEK_BASE_URL` | Defaults to `https://api.deepseek.com` |
 | `NEXT_PUBLIC_SITE_URL` | Your local or deployed application URL |
+| `CRON_SECRET` | Random server-only bearer secret for the daily trial cleanup job |
 
 Never prefix a server secret with `NEXT_PUBLIC_` or commit `.env.local`. The local setup page and its API return 404 in production. Deployment and reconnection instructions are in [SETUP.md](docs/SETUP.md) (Traditional Chinese).
 
@@ -85,9 +87,11 @@ Never prefix a server secret with `NEXT_PUBLIC_` or commit `.env.local`. The loc
 npm run verify
 ```
 
-This runs TypeScript checking, **50 local tests** and a production build. SQL tests execute PostgreSQL through PGlite, including permissions, RLS, monetary constraints, quota reservation and aggregation. Adapter failure tests use mocked responses. The GitHub Actions workflow runs this same check without service credentials.
+This runs TypeScript checking, **58 local tests** and a production build. SQL tests execute PostgreSQL through PGlite, including permissions, RLS, monetary constraints, quota reservation and aggregation. Adapter failure tests use mocked responses. The GitHub Actions workflow runs this same check without service credentials.
 
-Additional checks were performed against the deployed services on 21–22 October 2026:
+On 23 October 2026, the new guest flow passed **39/39 production HTTP checks** and **15/15 public access checks**. The production browser completed the Hong Kong photo example through real extraction, confirmation and the HKD 985 dashboard. Two licensed photos are successful examples, not an accuracy benchmark.
+
+Earlier checks were performed against the deployed services on 21–22 October 2026:
 
 | Check | Recorded result | Boundary |
 | --- | --- | --- |
@@ -113,10 +117,11 @@ Optional developer checks:
 npm run test:fx-live
 npm run test:public -- https://smartreceipt-ai-lime.vercel.app
 npm run test:integration
+npm run test:guest-live -- http://127.0.0.1:3000
 npm run evaluate:ai
 ```
 
-`test:integration` creates and cleans up temporary users in your configured Supabase project. `evaluate:ai` consumes your configured AI account's credits and writes results to `reports/private/`. It runs outside the application's daily quota. Missing required credentials produce `NOT RUN` and a nonzero exit status. See [SETUP.md](docs/SETUP.md) before running live checks.
+`test:guest-live` runs a real licensed receipt through the guest HTTP flow, consumes one admission and three quota reservations (one real model call, two failed fixtures), and cleans up only its own trial. Use a separate test project; reservations are not refunded. `test:integration` creates and cleans up temporary users in your configured Supabase project. `evaluate:ai` consumes your configured AI account's credits and writes results to `reports/private/`. It runs outside the application's daily quota. Missing required credentials produce `NOT RUN` and a nonzero exit status. See [SETUP.md](docs/SETUP.md) before running live checks.
 
 ## Repository guide
 
@@ -139,5 +144,5 @@ docs/                Setup, architecture and validation
 - Registration is invitation-only; password reset and self-service account/original-file deletion are not implemented. Deleting an expense retains the receipt and extraction draft.
 - Batch processing runs in the browser with bounded concurrency; there is no durable background queue. Closing the page can interrupt work.
 - Transaction filtering, pagination and export currently run on client-loaded records. Large datasets need server-side queries and export jobs.
-- Hash deduplication detects identical files, not newly photographed or recompressed copies. AI quotas are per user, not a site-wide spending cap.
+- Hash deduplication detects identical files, not newly photographed or recompressed copies. The public trial has a global daily quota; private account usage has separate per-user quotas, without a combined provider spending cap.
 - Reference FX can differ from bank settlement rates. Multi-organization accounting, refunds, bank reconciliation, subscription billing and statutory tax reporting are outside the current scope.

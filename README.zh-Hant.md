@@ -6,13 +6,14 @@
 
 **Next.js 16 · React 19 · TypeScript · Supabase Auth / PostgreSQL / Storage · DeepSeek Vision · Recharts · Tailwind CSS · Vercel**
 
-![繁體中文看板：示範支出、月度預算與圖表](docs/images/dashboard-zh-Hant.jpg)
+![繁體中文看板：真實收據範例](docs/images/dashboard-zh-Hant.png)
 
-公開頁面使用清楚標示的示範資料與生成憑證，毋須登入，也不會呼叫 AI。私人工作區已接通真實雲端服務；因尚未配置自訂 SMTP，目前採邀請制註冊。
+首頁提供有授權來源的真實收據照片，保留原始日期與金額，欄位經人工核對。按「免註冊試用 AI」即可建立獨立的 24 小時帳簿，拍照／上傳、實際辨識、覆核入帳與查看統計。私人長期帳號仍受 SMTP 註冊限制。[圖片來源](docs/RECEIPT_SOURCES.md) · [試用設計與限制](docs/GUEST_TRIAL.md)。
 
 ## 功能
 
-- JPG、PNG、PDF 批量上傳：每批最多 10 份，每份 10 MB，每份 PDF 最多 10 頁；多頁 PDF 視為一張收據。
+- 訪客試用：3 次辨識（含失敗／重試）、3 份收據、每份 5 MB、PDF 2 頁。公開試用全站每日 20 次辨識預留、5 個新帳簿，每個網絡每日最多 2 個新帳簿；到期後自動清理。
+- 私人帳號 JPG、PNG、PDF 批量上傳：每批最多 10 份，每份 10 MB，每份 PDF 最多 10 頁；多頁 PDF 視為一張收據。
 - DeepSeek 提取商家、日期、總額、幣種、稅額與分類，原圖與可編輯表單並排顯示；確認前不進正式帳目。
 - HKD／USD／CNY 歷史參考匯率，保存原幣、匯率、報價日、來源及港幣金額。
 - 月度預算、六個曆月趨勢、分類圖表、交易修改／搜尋／篩選／排序／分頁及 CSV 匯出。
@@ -38,11 +39,13 @@ npm run dev
 
 打開 http://127.0.0.1:3000 。沒有憑證也能查看公開示範。Windows PowerShell 若阻擋 npm 腳本，改用 `npm.cmd`。
 
-啟用私人帳簿需自行建立 Supabase、在新空白專案套用 migration，並以 [`.env.example`](.env.example) 建立 `.env.local`。也可使用開發專用的 `/setup` 頁面；正式環境會返回 404。詳細接入及部署步驟見 [SETUP.md](docs/SETUP.md)，不要把密鑰或私人收據提交到 Git。
+啟用私人帳簿需自行建立 Supabase、在新空白專案按順序套用兩份 migration（現有安裝只套用新增的訪客 migration），並以 [`.env.example`](.env.example) 建立 `.env.local`。也可使用開發專用的 `/setup` 頁面；正式環境會返回 404。詳細接入及部署步驟見 [SETUP.md](docs/SETUP.md)，不要把密鑰或私人收據提交到 Git。
 
 ## 驗證結果與邊界
 
-`npm run verify` 執行 TypeScript 檢查、50 項本機測試及正式版建置；GitHub Actions 執行相同檢查，不需要服務密鑰。SQL 測試使用 PGlite，不冒充雲端驗收。
+`npm run verify` 執行 TypeScript 檢查、58 項本機測試及正式版建置；GitHub Actions 執行相同檢查，不需要服務密鑰。SQL 測試使用 PGlite，不冒充雲端驗收。
+
+2026 年 10 月 23 日新增正式訪客流程 39/39、公開存取 15/15 檢查，以及正式瀏覽器從免註冊範例辨識到入帳與看板更新。兩張真實照片成功案例不代表一般準確率。
 
 2026 年 10 月 21–22 日另完成真實 Supabase 27/27、公開 HTTPS 14/14、正式私人 API 32/32 檢查，以及桌面／手機瀏覽器核對。完整私人 UI 在本機連真實雲端驗收，正式公開 UI 另外驗收。
 

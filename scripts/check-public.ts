@@ -3,7 +3,7 @@ const base=(process.argv[2]||"http://127.0.0.1:3001").replace(/\/$/,"");
 async function main() {
   const uuid="00000000-0000-4000-8000-000000000000";
   const cases:[string,string,number][]=[
-    ["/","GET",200],["/auth","GET",200],["/workspace","GET",307],
+    ["/api/cron/cleanup-trials","GET",401],["/","GET",200],["/auth","GET",200],["/workspace","GET",307],
     ["/setup","GET",404],["/api/local-setup","POST",404],
     ["/api/workspace","GET",401],["/api/analytics?month=2026-10","GET",401],
     ["/api/fx?currency=USD&date=2026-09-20","GET",401],

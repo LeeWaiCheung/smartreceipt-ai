@@ -2,6 +2,8 @@ import { CATEGORIES,type CategoryId } from "./types";
 export type Locale = "zh-Hant" | "en";
 export const LOCALE_STORAGE_KEY = "smartreceipt.locale";
 export const english:Record<string,string> = {
+  "用香港範例辨識（計 1 次）": "Scan Hong Kong example (1 attempt)",
+  "範例照片來源": "Example photo source",
   "範例收據": "Example receipts",
   "訪客試用": "Guest trial",
   "試用工作區": "Trial workspace",

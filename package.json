@@ -14,7 +14,8 @@
     "evaluate:ai": "tsx scripts/evaluate-ai.ts",
     "fixtures": "node scripts/generate-fixtures.mjs",
     "test:fx-live": "tsx scripts/check-fx.ts",
-    "test:public": "tsx scripts/check-public.ts"
+    "test:public": "tsx scripts/check-public.ts",
+    "test:guest-live": "tsx scripts/guest-flow.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.3.1",

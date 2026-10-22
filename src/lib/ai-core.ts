@@ -28,6 +28,7 @@ export async function extractReceipt(imageUrls: string[]): Promise<ExtractionRes
           "category_id must be one of: " + CATEGORIES.map(c => c.id + "=" + c.name).join(", ") + ".",
           "warnings is an array of brief Traditional Chinese notes for uncertain or missing fields.",
           "Read the final charged total, not cash tendered, change, balance, or subtotal. Tax is already included in the total when the document says so. Do not add it again.",
+          "A service charge or gratuity is not tax. Report tax only when an actual tax line is printed; otherwise leave tax null.",
           "Never invent missing dates, amounts, tax or currencies. A bare dollar sign is insufficient to establish currency; return null unless other visible evidence makes the currency clear.",
           "Do not use today's date to fill a missing date. Multiple pages belong to the same receipt: produce one overall total and avoid summing repeated totals.",
           "Example JSON: {\"merchant\":\"Sample Cafe\",\"transaction_date\":\"2026-10-01\",\"amount\":\"68.00\",\"currency\":\"HKD\",\"tax\":null,\"category_id\":\"food\",\"warnings\":[]}"

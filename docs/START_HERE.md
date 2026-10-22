@@ -24,13 +24,13 @@
 
 ## 展示專案
 
-公開示範毋須帳號，使用清楚標示的樣本資料；真實上傳與辨識需登入私人工作區。資料流與設計取捨見 [架構說明](ARCHITECTURE.md)，已完成的測試及未覆蓋範圍見 [驗收報告](ACCEPTANCE.md)。
+公開範例使用有授權來源的真實照片。面試官可按「免註冊試用 AI」建立 24 小時獨立帳簿，選檔／拍照或直接辨識香港範例，每個試用工作區 3 次辨識（失敗及重試亦計次）。資料流與設計取捨見 [架構說明](ARCHITECTURE.md)，已完成的測試及未覆蓋範圍見 [驗收報告](ACCEPTANCE.md)。
 
-專案的原始碼與版本紀錄：[GitHub — SmartReceipt AI](https://github.com/LeeWaiCheung/smartreceipt-ai)。CV 可同時放公開示範與 GitHub 網址。Git 保存本機版本，GitHub 保存可供面試官閱讀的遠端副本；之後修改仍在目前的專案資料夾進行，不需要重新下載 ZIP。整個 reports、.env.local、.vercel 及依賴／建置產物已排除版本控制。
+GitHub 儲存庫已按要求刪除，現有原始碼與實際修改紀錄保存在本機。待本輪修改完成後再重新發佈；目前 CV 先使用網站網址。預定 GitHub 地址為 https://github.com/LeeWaiCheung/smartreceipt-ai 。Git 保存本機版本，GitHub 保存可供面試官閱讀的遠端副本；之後修改仍在目前的專案資料夾進行，不需要重新下載 ZIP。整個 reports、.env.local、.vercel 及依賴／建置產物已排除版本控制。
 
 ## 現有限制
 
-私人註冊採邀請制：預設郵件服務只寄給 Supabase 專案／組織成員。訪客可看公開示範；全面開放註冊需再配置郵件服務。沒有付款訂閱、銀行對帳、忘記密碼、自助刪除原檔或法定報稅功能。詳見 [驗收報告](ACCEPTANCE.md) 及 [設計與限制](ARCHITECTURE.md)。
+私人註冊採邀請制：預設郵件服務只寄給 Supabase 專案／組織成員。訪客可看真實照片範例並免註冊試用有限次數 AI；全面開放註冊需再配置郵件服務。沒有付款訂閱、銀行對帳、忘記密碼、自助刪除原檔或法定報稅功能。詳見 [驗收報告](ACCEPTANCE.md) 及 [設計與限制](ARCHITECTURE.md)。
 
 ## 帳戶與費用
 

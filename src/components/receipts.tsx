@@ -8,6 +8,7 @@ import { UploadCloud,Camera,FileImage,FileText,CheckCircle2,AlertCircle,LoaderCi
 import { toast } from "sonner";
 import { apiFetch } from "@/lib/client-api";
 import { prepareReceipt } from "@/lib/prepare-upload";
+import { demoSnapshot } from "@/lib/demo";
 import { browserClient } from "@/lib/supabase/browser";
 import type { Receipt,Snapshot } from "@/lib/types";
 import { Button } from "./ui/button";
@@ -19,6 +20,13 @@ export function Receipts({data,demo,onReview,onRefresh}:{data:Snapshot;demo:bool
   const {t,locale,error:localizeError}=useLanguage();
   const [jobs,setJobs]=useState<UploadJob[]>([]),[running,setRunning]=useState(false),[dragging,setDragging]=useState(false),[tab,setTab]=useState("all"),[retryId,setRetryId]=useState(""),[page,setPage]=useState(1);
   const input=useRef<HTMLInputElement>(null),camera=useRef<HTMLInputElement>(null);
+  async function sample() {
+    try {
+      const response=await fetch("/demo/receipts/hk-restaurant-2026.jpg");
+      if(!response.ok)throw new Error("暫時無法顯示憑證，請稍後再試。");
+      await upload([new File([await response.blob()],"hk-restaurant-2026.jpg",{type:"image/jpeg"})]);
+    } catch(error){toast.error(localizeError(error));}
+  }
   function updateJob(id:string,patch:Partial<UploadJob>) {setJobs(previous=>previous.map(job=>job.id===id?{...job,...patch}:job));}
   async function upload(files:File[]) {
     if(demo || running || !files.length)return;
@@ -78,6 +86,7 @@ export function Receipts({data,demo,onReview,onRefresh}:{data:Snapshot;demo:bool
     <div className="upload-grid"><section className={"upload-zone"+(dragging?" dragging":"")} onDragOver={event=>{event.preventDefault();setDragging(true);}} onDragLeave={()=>setDragging(false)} onDrop={event=>{event.preventDefault();setDragging(false);if(demo){toast.info(t("按「免註冊試用 AI」即可上傳自己的收據。"));return;}void upload(Array.from(event.dataTransfer.files));}}>
       <div className="upload-illustration"><div className="mini-paper back"/><div className="mini-paper"><ScanLine size={31}/><i/><i/><span>HK$ 128.00</span></div><span className="upload-float-icon"><UploadCloud size={23}/></span></div>
       <h2>{t("上傳收據")}</h2><p>{t("拖放文件或選擇圖片／PDF")}</p><div className="upload-actions">{demo?<TrialButton/>:<><Button disabled={running} onClick={()=>input.current?.click()}><UploadCloud size={17}/>{running?t("處理文件中…"):t("選擇文件")}</Button><Button variant="outline" disabled={running} onClick={()=>camera.current?.click()}><Camera size={17}/>{t("拍照")}</Button></>}</div>
+      {data.trial&&<div className="trial-sample"><Button size="sm" variant="ghost" disabled={running} onClick={()=>void sample()}>{t("用香港範例辨識（計 1 次）")}</Button><a href={demoSnapshot().receipts[0].source!.url} target="_blank" rel="noreferrer">{t("範例照片來源")} · CC0</a></div>}
       <div className="upload-limits"><span>{t("JPG、PNG、PDF")}</span><i/>{t(data.trial?"每份最多 5 MB":"每份最多 10 MB")}<i/>{t(data.trial?"每個試用工作區最多 3 份":"每批最多 10 份")}</div>
       <input className="sr-only" type="file" multiple accept="image/jpeg,image/png,application/pdf" aria-label={t("選擇收據文件")} ref={input} onChange={event=>void upload(Array.from(event.target.files || []))}/>
       <input className="sr-only" type="file" accept="image/jpeg,image/png" capture="environment" aria-label={t("拍攝收據")} ref={camera} onChange={event=>void upload(Array.from(event.target.files || []))}/>
