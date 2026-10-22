@@ -19,8 +19,8 @@ describe("dates and extraction",()=>{
 });
 describe("filters, totals and uploads",()=>{
   const demo=demoSnapshot(new Date("2026-10-21T04:00:00Z"));
-  it("applies intersecting search, category and inclusive dates",()=>{const result=filterTransactions(demo.transactions,{search:"  ADOBE ",category:"software",start:"2026-10-21",end:"2026-10-21"});expect(result).toHaveLength(1);expect(result[0].merchant).toBe("Adobe Creative Cloud");});
-  it("does not include pending receipts in the monthly ledger",()=>{const rows=demo.transactions.filter(t=>t.transaction_date.startsWith("2026-10"));expect(rows).toHaveLength(18);expect(sumHkd(rows)).toBe("7603.14");expect(demo.receipts.filter(r=>r.status==="needs_review")).toHaveLength(2);});
+  it("applies intersecting search, category and inclusive dates",()=>{const result=filterTransactions(demo.transactions,{search:"  CENTS ",category:"other",start:"2021-08-18",end:"2021-08-18"});expect(result).toHaveLength(1);expect(result[0].merchant).toBe("99 Cents Only Stores");});
+  it("preserves the two source documents without shifting dates or inventing extra ledger rows",()=>{expect(demo.transactions).toHaveLength(2);expect(demo.transactions.map(t=>t.transaction_date)).toEqual(["2026-01-11","2021-08-18"]);expect(sumHkd(demo.transactions.filter(t=>t.transaction_date.startsWith("2026-01")))).toBe("985.00");expect(demo.receipts.every(r=>r.source?.url.startsWith("https://commons.wikimedia.org/"))).toBe(true);});
   it("represents an empty ledger as zero",()=>expect(sumHkd([])).toBe("0.00"));
   it("enforces format, extension and size boundaries",()=>{expect(()=>validateUpload({name:"ticket.PNG",type:"image/png",size:10485760})).not.toThrow();expect(()=>validateUpload({name:"ticket.html",type:"image/png",size:10})).toThrow();expect(()=>validateUpload({name:"ticket.pdf",type:"application/pdf",size:10485761})).toThrow();expect(()=>validateUpload({name:"ticket.jpg",type:"image/jpeg",size:0})).toThrow();});
 });

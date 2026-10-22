@@ -37,6 +37,7 @@ export interface Receipt {
   error_message: string | null;
   created_at: string;
   preview_url?: string;
+  source?: { url:string; author:string; license:string; license_url:string };
 }
 export interface Transaction {
   id: string;
@@ -62,6 +63,7 @@ export interface Snapshot {
   recognizedCount: number;
   aiAttemptsToday: number;
   dailyLimit: number;
+  trial?: { expiresAt:string; attempts:number; limit:number };
 }
 export interface TransactionFilter { search: string; category: string; start: string; end: string }
 export interface FxQuote { rate: string; date: string; source: string }
