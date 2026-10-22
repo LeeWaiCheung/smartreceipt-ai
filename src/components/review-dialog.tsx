@@ -1,4 +1,5 @@
 "use client";
+import { TrialButton } from "./trial-button";
 import { useLanguage } from "./language-provider";
 import { LanguageSwitch } from "./language-switch";
 import { unitLabel } from "@/lib/i18n";
@@ -66,7 +67,8 @@ export function ReviewDialog({receipt,transaction,demo,onClose,onSaved}:{receipt
     <div className="review-body"><section className="receipt-preview"><div className="preview-toolbar"><span>{t("原始憑證")}</span><div><button className="icon-button" aria-label={t("縮小憑證")} onClick={()=>setZoom(Math.max(0.65,zoom-0.2))}><ZoomOut size={16}/></button><span>{Math.round(zoom*100)}%</span><button className="icon-button" aria-label={t("放大憑證")} onClick={()=>setZoom(Math.min(2.4,zoom+0.2))}><ZoomIn size={16}/></button>{original&&<a className="icon-button" href={original} target="_blank" rel="noreferrer" aria-label={t("另開原始文件")}><ExternalLink size={15}/></a>}</div></div>
       <div className="receipt-canvas">{previewError?<p className="inline-error">{localizeError(previewError)}</p>:pages[page]?<img src={pages[page]} alt={t("收據原圖，第 {page} 頁",{page:page+1})} style={{width:(zoom*100)+"%",maxWidth:"none"}}/>:<div className="preview-loading"><LoaderCircle size={24} className="spin"/><p>{t("正在載入原圖…")}</p></div>}</div>
       {pages.length>1&&<div className="page-controls"><button className="icon-button" disabled={page===0} aria-label={t("上一張憑證頁")} onClick={()=>{setPage(page-1);setZoom(1);}}><ChevronLeft size={16}/></button><span>{page+1} / {pages.length}{" "+unitLabel(locale,pages.length,"pages")}</span><button className="icon-button" disabled={page===pages.length-1} aria-label={t("下一張憑證頁")} onClick={()=>{setPage(page+1);setZoom(1);}}><ChevronRight size={16}/></button></div>}
-    </section><section className="review-form"><div className="review-notice"><ShieldCheck size={17}/><p>{demo?t("這是一份預先準備的示範憑證。登入後可辨識自己的收據。"):t("請對照原圖核對商家、日期、金額、幣種及分類。")}</p></div>
+    </section><section className="review-form"><div className="review-notice"><ShieldCheck size={17}/><p>{demo?t("這是真實收據照片，欄位經人工核對。你可以免註冊試用辨識自己的收據。"):t("請對照原圖核對商家、日期、金額、幣種及分類。")}</p></div>
+      {receipt.source&&<p className="receipt-attribution"><a href={receipt.source.url} target="_blank" rel="noreferrer">{t("圖片來源")}: Wikimedia Commons</a><br/>{receipt.source.author} · <a href={receipt.source.license_url} target="_blank" rel="noreferrer">{receipt.source.license}</a><br/>{t("原圖未經修改")}</p>}
       {!!receipt.extraction?.warnings.length&&<div className="review-warnings"><AlertCircle size={16}/><div><strong>{t("AI 提示（原文）")}</strong>{receipt.extraction.warnings.map((warning,i)=><p key={i}>{warning}</p>)}</div></div>}
       <div className="fields-grid"><label className="field span-two">{t("商家名稱")}<input value={fields.merchant} onChange={e=>update("merchant",e.target.value)} disabled={demo||busy} maxLength={160} placeholder={t("請對照收據填寫")}/></label>
       <label className="field">{t("交易日期")}<input type="date" value={fields.transaction_date} max={hongKongDate()} onInput={e=>update("transaction_date",e.currentTarget.value)} disabled={demo||busy}/></label>
@@ -78,6 +80,6 @@ export function ReviewDialog({receipt,transaction,demo,onClose,onSaved}:{receipt
       {error&&<div className="inline-error" role="alert"><AlertCircle size={16}/>{localizeError(error)}</div>}
       <p className="form-note">{t("入帳時保存採用的匯率與日期，方便日後核對。")}</p>
     </section></div>
-    <div className="review-footer"><span><ShieldCheck size={15}/>{demo?t("示範資料 · 唯讀"):t("原圖與資料僅供你的帳號存取")}</span><div><LanguageSwitch/><Button variant="outline" onClick={onClose} disabled={busy}>{t("關閉")}</Button>{demo?<Button asChild><Link href="/auth">{t("登入並上傳收據")}<ArrowUpRight size={16}/></Link></Button>:<Button onClick={save} disabled={busy}>{busy?<LoaderCircle className="spin" size={16}/>:<Check size={16}/>} {transaction?t("儲存修改"):t("確認入帳")}</Button>}</div></div>
+    <div className="review-footer"><span><ShieldCheck size={15}/>{demo?t("示範資料 · 唯讀"):t("原圖與資料僅供你的帳號存取")}</span><div><LanguageSwitch/><Button variant="outline" onClick={onClose} disabled={busy}>{t("關閉")}</Button>{demo?<TrialButton/>:<Button onClick={save} disabled={busy}>{busy?<LoaderCircle className="spin" size={16}/>:<Check size={16}/>} {transaction?t("儲存修改"):t("確認入帳")}</Button>}</div></div>
   </DialogContent></Dialog>;
 }

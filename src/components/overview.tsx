@@ -1,4 +1,5 @@
 "use client";
+import { TrialButton } from "./trial-button";
 import { useLanguage } from "./language-provider";
 import { LanguageSwitch } from "./language-switch";
 import { monthLabel,unitLabel } from "@/lib/i18n";
@@ -62,11 +63,13 @@ export function Overview({data,month,demo,onMonth,onTransactions,onUpload,onRevi
       <div><h1>{t("財務總覽")}</h1></div>
       <div className="heading-actions"><label className="month-picker"><span className="sr-only">{t("查看月份")}</span><input type="month" aria-label={t("查看月份")} value={month} max={currentMonth} onInput={e=>onMonth(e.currentTarget.value || currentMonth)}/></label><Button variant="outline" onClick={onExport}><Download size={16}/>{t("匯出明細")}</Button></div>
     </section>
-    {demo&&<div className="demo-banner"><span className="banner-icon"><Sparkles size={17}/></span><div><strong>{t("示範工作區")}</strong><span>{t("此頁使用示範資料與生成憑證。")}</span></div><Link href="/auth">{t("建立帳號")}<ArrowUpRight size={15}/></Link></div>}
+    {demo&&<div className="demo-banner"><span className="banner-icon"><Sparkles size={17}/></span><div><strong>{t("示範工作區")}</strong><span>{t("真實收據照片，保留原始日期與金額。可切換範例月份查看。")}</span></div><TrialButton/></div>}
+    {demo&&<p className="below-note">{t("免註冊試用：3 次辨識，24 小時臨時帳簿。文件交由 DeepSeek 處理，請使用不含敏感資料的收據。")}</p>}
+    {demo&&<div className="sample-months"><span>{t("範例月份")}</span>{Array.from(new Set(data.transactions.map(row=>row.transaction_date.slice(0,7)))).map(key=><Button size="sm" variant={month===key?"default":"outline"} key={key} onClick={()=>onMonth(key)}>{key}</Button>)}</div>}
     <div className="stats-grid">
       <article className="stat-card"><div className="stat-label">{t("月度總支出")}<span className="stat-icon"><Wallet size={18}/></span></div><div className="stat-amount"><span>HK$</span>{hkd(total)}</div><div className="stat-foot">{change!==null?<><span className={change<=0?"trend-good":"trend-neutral"}>{change<=0?<ArrowDownLeft size={13}/>:<ArrowUpRight size={13}/>} {Math.abs(change).toFixed(1)}%</span><span>{t("較上月支出")}</span></>:<span>{t("尚無上月資料")}</span>}</div></article>
       <article className="stat-card"><div className="stat-label">{t("月度預算")}<span className="stat-icon warm"><Target size={18}/></span></div><div className="budget-head"><div className="stat-amount">{budget?<>{budgetPercent.toFixed(0)}<span>%</span></>:<span className="budget-unset">{t("尚未設定")}</span>}</div><button className="text-action" onClick={openBudget} aria-label={demo?t("查看月度預算"):t("設定月度預算")}><SlidersHorizontal size={15}/></button></div><div className="budget-track"><span className={budgetPercent>100?"over-budget":""} style={{width:Math.min(100,budgetPercent)+"%"}}/></div><div className="stat-foot">{budget?<><span>{Number(available)>=0?t("可用餘額"):t("超出預算")} <strong>HK$ {hkd(Math.abs(Number(available)))}</strong></span><span>/ {hkd(budget.amount_hkd,0)}</span></>:<button className="text-action" onClick={openBudget}>{t("設定月度預算 ")}<ChevronRight size={13}/></button>}</div></article>
-      <article className="stat-card"><div className="stat-label">{t("已辨識收據")}<span className="stat-icon lavender"><FileCheck2 size={18}/></span></div><div className="stat-amount">{data.recognizedCount}<span className="stat-unit">{unitLabel(locale,data.recognizedCount,"receipts")}</span></div><div className="stat-foot"><span className="tiny-dot"/><span>{data.receipts.filter(r=>r.status==="needs_review").length}{t(" 份待覆核")}</span><span className="dot-separator">·</span><span>{data.transactions.length}{t(" 筆已入帳")}</span></div></article>
+      <article className="stat-card"><div className="stat-label">{t(demo?"範例收據":"已辨識收據")}<span className="stat-icon lavender"><FileCheck2 size={18}/></span></div><div className="stat-amount">{data.recognizedCount}<span className="stat-unit">{unitLabel(locale,data.recognizedCount,"receipts")}</span></div><div className="stat-foot"><span className="tiny-dot"/><span>{data.receipts.filter(r=>r.status==="needs_review").length}{t(" 份待覆核")}</span><span className="dot-separator">·</span><span>{data.transactions.length}{t(" 筆已入帳")}</span></div></article>
     </div>
     <div className="charts-grid">
       <article className="panel trend-panel"><div className="panel-heading"><div><h2>{t("支出趨勢")}</h2><p>{t("近六個月的支出變化")}</p></div><span className="chart-key"><i/>{t("港幣支出")}</span></div>

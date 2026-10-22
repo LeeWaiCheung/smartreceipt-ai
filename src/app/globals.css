@@ -52,3 +52,6 @@
   .receipt-row>.button,.receipt-row>svg{grid-column:3;grid-row:1 / span 2}
   .upload-guide li>div{min-width:0}
 }
+
+.sample-months{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-4px 0 20px;font-size:12px;color:var(--muted)}
+.receipt-attribution{font-size:11px;line-height:1.7;overflow-wrap:anywhere;margin:0 0 14px;color:#68756f}.receipt-attribution a{text-decoration:underline}.trial-banner small{font-size:11px;opacity:.8}.trial-banner>div{flex:1}.trial-banner{flex-wrap:wrap}
