@@ -1,3 +1,4 @@
+import { receiptBucket } from "@/lib/trial";
 import { z } from "zod";
 import { ApiError,authenticatedUser,failure,json,sameOrigin } from "@/lib/api";
 import { adminClient,userClient } from "@/lib/supabase/server";
@@ -17,7 +18,7 @@ export async function POST(request: Request,{params}:{params:Promise<{id:string}
     if(error || !receipt) throw new ApiError(404,"找不到這份收據。");
     if(["confirmed","needs_review"].includes(receipt.status)) return json({receipt});
     const folder=user.id+"/"+receiptId;
-    const {data:objects,error:storageError}=await db.storage.from("receipts").list(folder,{limit:20});
+    const {data:objects,error:storageError}=await db.storage.from(receiptBucket(user)).list(folder,{limit:20});
     if(storageError || !objects || !receipt.page_paths.every((path:string)=>objects.some(obj=>obj.name===path.split("/").pop()))) {
       throw new ApiError(409,"文件尚未完整上傳，請重新選取原檔上傳。");
     }
@@ -26,6 +27,9 @@ export async function POST(request: Request,{params}:{params:Promise<{id:string}
     const reserved=await client!.rpc("reserve_ai_run",{p_receipt_id:receiptId});
     if(reserved.error) {
       const code=reserved.error.message;
+      if(code.includes("TRIAL_GLOBAL_LIMIT"))throw new ApiError(429,"今日公開 AI 試用額度已用完，請明天再試。");
+      if(code.includes("TRIAL_LIMIT"))throw new ApiError(429,"這個試用工作區已用完 3 次辨識額度。");
+      if(code.includes("TRIAL_EXPIRED"))throw new ApiError(401,"試用工作區已到期，請返回首頁重新開始。");
       if(code.includes("DAILY_LIMIT")) throw new ApiError(429,"已達今日辨識額度，請明天再試。");
       if(code.includes("ALREADY_PROCESSING")) throw new ApiError(409,"這份收據正在辨識，請稍候。");
       if(code.includes("RETRY_LIMIT")) throw new ApiError(429,"這份收據已達重試上限，請以更清晰的照片重新上傳。");
@@ -33,7 +37,7 @@ export async function POST(request: Request,{params}:{params:Promise<{id:string}
     }
     runId=reserved.data;
     const urls=await Promise.all(receipt.page_paths.map(async(path:string)=>{
-      const signed=await db.storage.from("receipts").createSignedUrl(path,300);
+      const signed=await db.storage.from(receiptBucket(user)).createSignedUrl(path,300);
       if(signed.error || !signed.data) throw new Error("STORAGE_SIGNING_FAILED");
       return signed.data.signedUrl;
     }));

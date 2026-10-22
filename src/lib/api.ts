@@ -1,7 +1,8 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { currentUser } from "./supabase/server";
+import { currentUser,userClient } from "./supabase/server";
+import { isTrialUser } from "./trial";
 import { isSameOrigin } from "./request-origin";
 export class ApiError extends Error {
   constructor(public status: number,message: string) { super(message); }
@@ -9,6 +10,11 @@ export class ApiError extends Error {
 export async function authenticatedUser() {
   const user = await currentUser();
   if (!user) throw new ApiError(401,"請先登入，再管理你的收據。");
+  if(isTrialUser(user)) {
+    const active=await (await userClient())!.rpc("workspace_access_active");
+    if(active.error)throw new ApiError(503,"試用服務暫時無法使用，請稍後再試。");
+    if(!active.data)throw new ApiError(401,"試用工作區已到期，請返回首頁重新開始。");
+  }
   return user;
 }
 export function json(data: unknown,status=200) {

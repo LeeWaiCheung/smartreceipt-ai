@@ -1,5 +1,6 @@
 import "server-only";
-import { adminClient,userClient } from "./supabase/server";
+import { adminClient,userClient,currentUser } from "./supabase/server";
+import { isTrialUser } from "./trial";
 import { hongKongDate } from "./domain";
 import { ApiError } from "./api";
 import type { Snapshot,Transaction,Receipt } from "./types";
@@ -26,7 +27,18 @@ export async function snapshot(): Promise<Snapshot> {
     adminClient().from("app_config").select("daily_ai_limit").eq("id",true).single()
   ]);
   if (budgetResult.error || usageResult.error || configResult.error) throw new ApiError(503,"無法讀取工作區資料。");
+  let trial:Snapshot["trial"];
+  const user=await currentUser();
+  if(user&&isTrialUser(user)) {
+    const [session,attempts]=await Promise.all([
+      client.from("guest_sessions").select("expires_at").eq("user_id",user.id).single(),
+      client.from("ai_runs").select("id",{count:"exact",head:true})
+    ]);
+    if(session.error||attempts.error)throw new ApiError(503,"無法讀取工作區資料。");
+    trial={expiresAt:session.data.expires_at,attempts:attempts.count || 0,limit:3};
+  }
   return {
+    trial,
     transactions:tx.map(row => ({
       ...row,amount:String(row.amount),tax:row.tax===null?null:String(row.tax),
       exchange_rate:String(row.exchange_rate),amount_hkd:String(row.amount_hkd)
